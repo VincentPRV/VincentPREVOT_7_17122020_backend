@@ -5,6 +5,7 @@ const bodyParser = require ('body-parser');
 const path = require("path");
 const helmet = require("helmet");
 
+
 // configure et autorise les accès extérieurs
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,6 +15,10 @@ app.use((req, res, next) => {
 });
 
 
+const db = require('./models/db-connect');
+db.sequelize.sync().then(() => {
+    console.log("Drop and re-sync db.");
+  });
 
 // Ajout des routes d'identification et d'authentification
 const userRoutes = require('./routes/user');

@@ -5,6 +5,7 @@ require('dotenv').config()
 // Ajout d'express
 const app = require('./app');
 
+
 // Fonction qui renvoie un port valide
 const normalizePort = val => {
   const port = parseInt(val, 10);

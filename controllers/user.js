@@ -1,26 +1,30 @@
 // import des packages
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-/* const User = require('../models/User'); */
+const User = require('../models/db-connect').user;
 
 // Création de signup (enregistrement de compte utilisateur)
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
+    console.log('********************', req.body, '********************')
+   bcrypt.hash(req.body.password, 10)
         .then(hash => {
-        const user = new User({
+        User.create({
             email: req.body.email,
+            username: req.body.username,
             password: hash
-        });
-        user.save()
+        })
           .then(() => res.status(201).json({ message: 'Utilisateur créé !'}))
           .catch(error => res.status(400).json({ error }));
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ error })
+        });
 };
 
 // Création de login (connexion du compte utilisateur)
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email})
+    User.findOne({ where: {username:req.body.username}})
     .then(user => {
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !'});
