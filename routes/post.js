@@ -1,18 +1,18 @@
-/* // import des packages et initialisation du routeur
+// import des packages et initialisation du routeur
 const express = require("express");
 const router = express.Router();
-const postCtrl = require("../controllers/posts");
-const auth = require("../middleware/auth");
-const multer = require("../middleware/multer-config");
-
-// Création des différentes routes
-router.get('/', auth, postCtrl.getAllPosts);
-router.post('/', auth, multer, postCtrl.createPosts);
-router.get('/:id', auth, postCtrl.getOnePost);
-router.put('/:id', auth, multer, postCtrl.modifyPosts);
-router.delete('/:id', auth, postCtrl.deletePosts);
-router.post('/:id/like', auth, postCtrl.addLikes);
+const postCtrl = require("../controllers/post");
+//const auth = require("../middleware/auth");
 
 
+//Création des différentes routes
+router.get('/', postCtrl.getAllPosts);
+router.post('/', postCtrl.createPost);
+router.get('/:id', postCtrl.getOnePost);
+router.put('/:id', postCtrl.modifyPost);
+router.delete('/:id', postCtrl.deletePost);
 
-module.exports = router;*/
+
+
+
+module.exports = router;
