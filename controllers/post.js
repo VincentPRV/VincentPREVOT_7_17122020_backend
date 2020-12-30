@@ -8,6 +8,7 @@ exports.createPost = (req, res, next) => {
         text: req.body.text,
         UserId: req.body.UserId,
         title: req.body.title,
+        username: req.body.username
     })
         .then(() => res.status(201).json({ message: 'Post créé !' }))
         .catch(error => res.status(400).json({ error }));
@@ -30,6 +31,12 @@ exports.modifyPost = (req, res, next) => {
 
 
 exports.deletePost = (req, res, next) => {
+    Post.findOne({ where: { PostId: req.params.PostId } })
+        .then(post => {
+            Post.deleteOne({ where: { PostId: req.params.PostId } })
+            .then(() => res.status(200).json({ message: 'Objet Supprimé!' }))
+            .catch(error => res.status(400).json({ error }));
+        });
 };
 
 exports.getOnePost = (req, res, next) => {

@@ -50,8 +50,6 @@ exports.login = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-
-
 exports.modifyUser = (req, res, next) => {
     const userObject = req.file ?
         {
@@ -61,8 +59,6 @@ exports.modifyUser = (req, res, next) => {
         .then(() => res.status(200).json({ message: 'Objet Modifié!' }))
         .catch(error => res.status(400).json({ error }));
 };
-
-  
 
 exports.deleteUser = (req, res, next) => {
     User.deleteOne({ _id: req.params.id })
