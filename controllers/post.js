@@ -23,7 +23,13 @@ exports.getAllPosts = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-
+exports.userPosts = (req, res, next) => {
+    Post.findAll({ where: { username: req.params.username } })
+        .then(posts => {
+            res.status(200).json(posts);
+        })
+        .catch(error => res.status(500).json({ error }));
+};
 
 exports.modifyPost = (req, res, next) => {
 };

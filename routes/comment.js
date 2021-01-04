@@ -6,13 +6,12 @@ const  commentCtrl = require("../controllers/comment");
 
 
 //Création des différentes routes
-router.get('/:postId', commentCtrl.getAllComments);
+router.get('/:PostId', commentCtrl.getAllComments);
 router.post('/',  commentCtrl.createComment);
+router.get('/:id',  commentCtrl.getUserComments);
 router.get('/:id',  commentCtrl.getOneComment);
 router.put('/:id',  commentCtrl.modifyComment);
 router.delete('/:id',  commentCtrl.deleteComment);
-
-
 
 
 module.exports = router;

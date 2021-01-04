@@ -7,6 +7,7 @@ const postCtrl = require("../controllers/post");
 
 //Création des différentes routes
 router.get('/', postCtrl.getAllPosts);
+router.get('/:username', postCtrl.userPosts);
 router.post('/', postCtrl.createPost);
 router.get('/:id', postCtrl.getOnePost);
 router.put('/:id', postCtrl.modifyPost);

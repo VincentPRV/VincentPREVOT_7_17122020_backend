@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 
 
 const db = require('./models/db-connect');
-db.sequelize.sync({}).then(() => {
+db.sequelize.sync().then(() => {
     console.log("Drop and re-sync db.");
   });
 
