@@ -45,11 +45,7 @@ exports.userPosts = (req, res, next) => {
 };
 
 exports.modifyPost = (req, res, next) => {
-    const postObject = req.file ?
-        {
-            ...JSON.parse(req.body.post),
-        } : { ...req.body };
-    console.log(postObject, req.params.id)
+    const postObject = req.body;
     Post.update(postObject, { where: { id: req.params.id } })
         .then(() => res.status(200).json({ message: 'Post modifié avec succès' }))
         .catch(error => res.status(400).json({ error }));
@@ -65,7 +61,4 @@ exports.deletePost = (req, res, next) => {
                 .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
                 .catch(error => res.status(400).json({ error }));
         })
-};
-
-exports.getOnePost = (req, res, next) => {
 };

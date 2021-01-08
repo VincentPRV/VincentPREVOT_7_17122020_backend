@@ -2,15 +2,14 @@
 const express = require("express");
 const router = express.Router();
 const postCtrl = require("../controllers/post");
-//const auth = require("../middleware/auth");
+const auth = require("../middleware/auth");
 
 //Création des différentes routes
-router.get('/', postCtrl.getAllPosts);
+router.get('/', auth, postCtrl.getAllPosts);
 router.get('/isSignaled', postCtrl.getAllSignaled);
-router.get('/userPosts/:username', postCtrl.userPosts);
-router.post('/', postCtrl.createPost);
-router.get('/:id', postCtrl.getOnePost);
-router.put('/:id', postCtrl.modifyPost);
-router.delete('/:id', postCtrl.deletePost);
+router.get('/userPosts/:username', auth, postCtrl.userPosts);
+router.post('/',auth, postCtrl.createPost);
+router.put('/:id', auth, postCtrl.modifyPost);
+router.delete('/:id', auth, postCtrl.deletePost);
 
 module.exports = router;

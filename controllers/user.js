@@ -1,6 +1,7 @@
 // import des packages
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { user } = require('../models/db-connect');
 const User = require('../models/db-connect').user;
 
 // Création de signup (enregistrement de compte utilisateur)
@@ -50,14 +51,25 @@ exports.login = (req, res, next) => {
 };
 
 exports.modifyUser = (req, res, next) => {
-    const userObject = req.file ?
-        {
-            ...JSON.parse(req.body.post),
-        } : { ...req.body };
-    console.log(userObject, req.params.id)
-    User.update(userObject, { where: { id: req.params.id } })
-        .then(() => res.status(200).json({ message: 'Compte modifié avec succès' }))
-        .catch(error => res.status(400).json({ error }));
+    if(req.body.password) {
+        bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            const userObject = {...req.body};
+            userObject.password = hash;
+            User.update(userObject, { where: { id: req.params.id } })
+            .then(() => res.status(200).json({ message: 'Compte modifié avec succès' }))
+            .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({ error })
+        });
+    } else {
+        const userObject = {username: req.body.username,email: req.body.email}
+        User.update(userObject, { where: { id: req.params.id } })
+            .then(() => res.status(200).json({ message: 'Compte modifié avec succès' }))
+            .catch(error => res.status(400).json({ error }));
+    }
 };
 
 exports.deleteUser = (req, res, next) => {
@@ -70,4 +82,10 @@ exports.deleteUser = (req, res, next) => {
                 .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
                 .catch(error => res.status(400).json({ error }));
         })
+};
+
+exports.getOneUser = (req, res, next) => {
+    User.findOne({ where: { id: req.params.id } })
+        .then(user => res.status(200).json({ user }))
+        .catch(error => res.status(400).json({ error }));
 };

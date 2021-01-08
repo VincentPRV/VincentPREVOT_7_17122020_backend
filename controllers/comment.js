@@ -16,7 +16,7 @@ exports.createComment = (req, res, next) => {
 };
 
 exports.getAllSignaled = (req, res, next) => {
-   Comment.findAll({ where: { isSignaled: true } })
+    Comment.findAll({ where: { isSignaled: true } })
         .then(comments => {
             res.status(200).json(comments);
         })
@@ -24,9 +24,11 @@ exports.getAllSignaled = (req, res, next) => {
 };
 
 exports.getAllComments = (req, res, next) => {
-    Comment.findAll({ where: { PostId: req.params.PostId }, order: [
-        ['createdAt', 'DESC'],
-      ], })
+    Comment.findAll({
+        where: { PostId: req.params.PostId }, order: [
+            ['createdAt', 'DESC'],
+        ],
+    })
         .then(comments => {
             res.status(200).json(comments);
         })
@@ -55,11 +57,10 @@ exports.deleteComment = (req, res, next) => {
 
 exports.modifyComment = (req, res, next) => {
     const commentObject = req.file ?
-    {
-        ...JSON.parse(req.body.comment),
-    } : { ...req.body };
-console.log(commentObject, req.params.id)
-Comment.update(commentObject, { where: { id: req.params.id } })
-    .then(() => res.status(200).json({ message: 'Commentaire modifié avec succès' }))
-    .catch(error => res.status(400).json({ error }));
+        {
+            ...JSON.parse(req.body.comment),
+        } : { ...req.body };
+    Comment.update(commentObject, { where: { id: req.params.id } })
+        .then(() => res.status(200).json({ message: 'Commentaire modifié avec succès' }))
+        .catch(error => res.status(400).json({ error }));
 };
