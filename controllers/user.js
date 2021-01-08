@@ -5,7 +5,6 @@ const User = require('../models/db-connect').user;
 
 // Création de signup (enregistrement de compte utilisateur)
 exports.signup = (req, res, next) => {
-    console.log('********************', req.body, '********************')
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             User.create({
@@ -53,16 +52,22 @@ exports.login = (req, res, next) => {
 exports.modifyUser = (req, res, next) => {
     const userObject = req.file ?
         {
-            ...JSON.parse(req.body.user),
+            ...JSON.parse(req.body.post),
         } : { ...req.body };
-    User.updateOne({ id: req.params.id }, { ...userObject, id: req.params.user.id })
-        .then(() => res.status(200).json({ message: 'Objet Modifié!' }))
+    console.log(userObject, req.params.id)
+    User.update(userObject, { where: { id: req.params.id } })
+        .then(() => res.status(200).json({ message: 'Compte modifié avec succès' }))
         .catch(error => res.status(400).json({ error }));
 };
 
 exports.deleteUser = (req, res, next) => {
-    User.destroy({ id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
-      .catch(error => res.status(400).json({ error }));
-  };
-      
+    User.findOne({ where: { id: req.params.id } })
+        .then(user => {
+            if (!user) {
+                return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+            }
+            user.destroy({ id: req.params.id })
+                .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+                .catch(error => res.status(400).json({ error }));
+        })
+};

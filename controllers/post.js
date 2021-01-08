@@ -16,7 +16,20 @@ exports.createPost = (req, res, next) => {
 
 // Création de login (connexion du compte utilisateur)
 exports.getAllPosts = (req, res, next) => {
-    Post.findAll()
+    Post.findAll({
+        order: [
+            ['createdAt', 'DESC'],
+        ],
+    })
+        .then(posts => {
+
+            res.status(200).json(posts);
+        })
+        .catch(error => res.status(500).json({ error }));
+};
+
+exports.getAllSignaled = (req, res, next) => {
+    Post.findAll({ where: { isSignaled: true } })
         .then(posts => {
             res.status(200).json(posts);
         })
@@ -32,17 +45,26 @@ exports.userPosts = (req, res, next) => {
 };
 
 exports.modifyPost = (req, res, next) => {
+    const postObject = req.file ?
+        {
+            ...JSON.parse(req.body.post),
+        } : { ...req.body };
+    console.log(postObject, req.params.id)
+    Post.update(postObject, { where: { id: req.params.id } })
+        .then(() => res.status(200).json({ message: 'Post modifié avec succès' }))
+        .catch(error => res.status(400).json({ error }));
 };
 
-
-
 exports.deletePost = (req, res, next) => {
-    Post.findOne({ where: { PostId: req.params.PostId } })
+    Post.findOne({ where: { id: req.params.id } })
         .then(post => {
-            Post.deleteOne({ where: { PostId: req.params.PostId } })
-            .then(() => res.status(200).json({ message: 'Objet Supprimé!' }))
-            .catch(error => res.status(400).json({ error }));
-        });
+            if (!post) {
+                return res.status(401).json({ error: 'Post non trouvé !' });
+            }
+            post.destroy({ id: req.params.id })
+                .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+                .catch(error => res.status(400).json({ error }));
+        })
 };
 
 exports.getOnePost = (req, res, next) => {
