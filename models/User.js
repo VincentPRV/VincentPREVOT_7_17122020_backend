@@ -1,3 +1,4 @@
+//définition du modèle user
 module.exports= (sequelize, Sequelize) => {
     const user = sequelize.define("User", {
         email:{type: Sequelize.STRING, allowNull: false, unique: true}, 

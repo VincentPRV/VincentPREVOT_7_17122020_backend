@@ -49,7 +49,7 @@ exports.login = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-
+// modification du user en fonction de son id
 exports.modifyUser = (req, res, next) => {
     if(req.body.password) {
         bcrypt.hash(req.body.password, 10)
@@ -71,7 +71,7 @@ exports.modifyUser = (req, res, next) => {
             .catch(error => res.status(400).json({ error }));
     }
 };
-
+// création de la method delete des users
 exports.deleteUser = (req, res, next) => {
     User.findOne({ where: { id: req.params.id } })
         .then(user => {
@@ -83,7 +83,7 @@ exports.deleteUser = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }));
         })
 };
-
+// modification du user en fonction de son id
 exports.getOneUser = (req, res, next) => {
     User.findOne({ where: { id: req.params.id } })
         .then(user => res.status(200).json({ user }))

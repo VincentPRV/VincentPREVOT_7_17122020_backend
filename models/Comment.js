@@ -1,3 +1,4 @@
+//définition du modèle comment
 module.exports= (sequelize, Sequelize) => {
     const comment = sequelize.define("Comment", {
         text:{type: Sequelize.STRING, allowNull: false},

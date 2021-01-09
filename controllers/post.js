@@ -27,7 +27,7 @@ exports.getAllPosts = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-
+// récupération des posts signalé
 exports.getAllSignaled = (req, res, next) => {
     Post.findAll({ where: { isSignaled: true } })
         .then(posts => {
@@ -35,7 +35,7 @@ exports.getAllSignaled = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-
+// récupération des posts en fonction de l'utilsateur connecté
 exports.userPosts = (req, res, next) => {
     Post.findAll({ where: { username: req.params.username } })
         .then(posts => {
@@ -43,14 +43,14 @@ exports.userPosts = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-
+// modification du post en fonction de son id
 exports.modifyPost = (req, res, next) => {
     const postObject = req.body;
     Post.update(postObject, { where: { id: req.params.id } })
         .then(() => res.status(200).json({ message: 'Post modifié avec succès' }))
         .catch(error => res.status(400).json({ error }));
 };
-
+// création de la method delete des posts
 exports.deletePost = (req, res, next) => {
     Post.findOne({ where: { id: req.params.id } })
         .then(post => {
