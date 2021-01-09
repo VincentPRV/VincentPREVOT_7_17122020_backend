@@ -25,14 +25,24 @@ exports.getAllSignaled = (req, res, next) => {
 // récupération des commentaires en fonction du PostId
 exports.getAllComments = (req, res, next) => {
     Comment.findAll({
-        where: { PostId: req.params.PostId }, order: [
+        where: {
+            PostId: req.params.PostId
+        },
+        include: [{
+            model: User,
+            attributes: ['username'],
+        }],
+        order: [
             ['createdAt', 'DESC'],
         ],
     })
         .then(comments => {
             res.status(200).json(comments);
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            res.status(500).json({ error })
+            console.log(error)
+        });
 };
 // récupération des commentaires en fonction de l'utilsateur connecté
 exports.getUserComments = (req, res, next) => {

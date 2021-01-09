@@ -12,9 +12,9 @@ const db = {
 }
 
 // création d'une méthode "cascade" pour facilité la suppression d'information
-db.user.hasMany(db.post, {onDelete: "cascade", hooks: true})
-db.user.hasMany(db.comment, {onDelete: "cascade", hooks: true})
-db.post.hasMany(db.comment, {onDelete: "cascade", hooks: true})
+db.post.belongsTo(db.user, {onDelete: "cascade", hooks: true})
+db.comment.belongsTo(db.user, {onDelete: "cascade", hooks: true})
+db.comment.belongsTo(db.post, {onDelete: "cascade", hooks: true})
 
 // connexion à sequelize
 sequelize.authenticate()
